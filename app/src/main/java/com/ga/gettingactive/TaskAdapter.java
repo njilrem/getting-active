@@ -14,9 +14,9 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private List<Task> tasksList = new ArrayList<>();
+    private List<TaskContainer> tasksList = new ArrayList<>();
 
-    public void setItems(Collection<Task> tasks) {
+    public void setItems(Collection<TaskContainer> tasks) {
         tasksList.addAll(tasks);
         notifyDataSetChanged();
     }
@@ -53,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             descriptionView = itemView.findViewById(R.id.task_description);
         }
 
-        public void bind(Task task){
+        public void bind(TaskContainer task){
         titleView.setText(task.getTitle());
         descriptionView.setText(task.getDescription());
         }
