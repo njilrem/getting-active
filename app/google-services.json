@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "402936531127",
+    "firebase_url": "https://gettingactiveapp.firebaseio.com",
+    "project_id": "gettingactiveapp",
+    "storage_bucket": "gettingactiveapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402936531127:android:f559dfb3bbbd02f4162532",
+        "android_client_info": {
+          "package_name": "com.ga.gettingactive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402936531127-lfh5a3jv7edpsjc58t2nutnuo7ffghd8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsRXu78S7oi1JkFYFq4P7PTYxkXtEpQnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402936531127-lfh5a3jv7edpsjc58t2nutnuo7ffghd8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "402936531127-ggqounbuagd6jonlihgch5kl4rip4loi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.veronikababii.GettingActiveApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
