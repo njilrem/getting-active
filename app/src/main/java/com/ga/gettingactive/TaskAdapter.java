@@ -8,13 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private List<Task> tasksList = new ArrayList<>();
+    private final List<Task> tasksList = new ArrayList<>();
 
     public void setItems(Collection<Task> tasks) {
         tasksList.addAll(tasks);
@@ -26,6 +28,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyDataSetChanged();
     }
 
+    @NotNull
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -43,9 +46,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return tasksList.size();
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder{
-        private TextView titleView;
-        private TextView descriptionView;
+    static class TaskViewHolder extends RecyclerView.ViewHolder{
+        private final TextView titleView;
+        private final TextView descriptionView;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
