@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private TaskAdapter taskAdapter;
-
+    private View root;
     private String TAG = "HomeFragment";
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -38,18 +38,17 @@ public class HomeFragment extends Fragment {
             return null;
         }
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        setupCompelteedTasksView();
+
+        return root;
+    }
+
+    private void setupCompelteedTasksView(){
         recyclerView = root.findViewById(R.id.ongoing_tasks_list);
-        if(recyclerView==null)
-            Log.d("NULLPOINTER", "Recycler View is null");
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Collection<TaskContainer> tasks = new ArrayList<>();
-        tasks.add(new TaskContainer("Помыть жопу", "Помойте вашу жопу"));
-        tasks.add(new TaskContainer("Воздержитесь от онанизма", "Корни вашей непродуктивности лежат в интенсивной мастурбации. Если вы хотите " +
-                "действительно жестко гриндить по жизни, вы должны перестать заниматься этим хотя бы больше трех раз в день."));
-        /*
-        DB
-         */
         db.collection("tasks/firstBundle/tasks")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -72,6 +71,10 @@ public class HomeFragment extends Fragment {
                     }
                 });
         Log.d("TASKS", String.valueOf(tasks.size()));
-        return root;
+    }
+
+   private void getCompletedTasks(){
+
+
     }
 }
