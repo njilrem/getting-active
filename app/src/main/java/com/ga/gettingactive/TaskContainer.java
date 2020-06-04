@@ -10,9 +10,10 @@ public class TaskContainer {
 
     }
 
-    public TaskContainer(String title, String text){
+    public TaskContainer(String title, String text, String tip){
         this.title = title;
         this.description = text;
+        this.tip = tip;
     }
 
     public String getTip() { return tip; }

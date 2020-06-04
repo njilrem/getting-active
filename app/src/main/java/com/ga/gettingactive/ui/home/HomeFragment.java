@@ -40,12 +40,12 @@ public class HomeFragment extends Fragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        setupCompelteedTasksView();
+        setupOngoingTasksView();
 
         return root;
     }
 
-    private void setupCompelteedTasksView(){
+    private void setupOngoingTasksView(){
         recyclerView = root.findViewById(R.id.ongoing_tasks_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Collection<TaskContainer> tasks = new ArrayList<>();
