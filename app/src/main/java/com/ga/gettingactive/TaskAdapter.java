@@ -50,16 +50,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     static class TaskViewHolder extends RecyclerView.ViewHolder{
         private final TextView titleView;
         private final TextView descriptionView;
+        private final TextView tipView;
+        private final TextView tagsView;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.task_title);
             descriptionView = itemView.findViewById(R.id.task_description);
+            tipView = itemView.findViewById(R.id.tip_text);
+            tagsView = itemView.findViewById(R.id.tags_text);
         }
 
         public void bind(TaskContainer task){
         titleView.setText(task.getTitle());
         descriptionView.setText(task.getDescription());
+        tipView.setText(task.getTip());
+        tagsView.setText(task.getHashtags());
         }
     }
 
