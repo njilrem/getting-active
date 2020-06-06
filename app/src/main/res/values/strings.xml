@@ -13,4 +13,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_out">Sign out</string>
+    <string name="task_description_default">Task description</string>
+    <string name="task_title_default">Task title</string>
 </resources>
