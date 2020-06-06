@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.TaskContainer;
 import com.ga.gettingactive.R;
 import com.ga.gettingactive.TaskAdapter;
@@ -37,7 +39,7 @@ public class HomeFragment extends Fragment {
     private View root;
     private String TAG = "HomeFragment";
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirestoreDB.db;
     private DocumentReference userProfile;
     private List<TaskContainer> completedTasks;
 
