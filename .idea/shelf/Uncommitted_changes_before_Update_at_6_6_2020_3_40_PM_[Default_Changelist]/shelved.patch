@@ -1,0 +1,36 @@
+Index: .idea/sonarlint/issuestore/index.pb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\nq\nAapp/src/main/java/com/ga/gettingactive/ui/home/HomeViewModel.java\u0012,d\\2\\d239ff41454594df39bca44ee304acc378612eec\n<\n\fbuild.gradle\u0012,f\\0\\f07866736216be0ee2aba49e392191aeae700a35\n@\n\u0010app/build.gradle\u0012,f\\4\\f4a01d6a4fcb971362ec00a83903fd3902f52164\nh\n8app/src/main/java/com/ga/gettingactive/MainActivity.java\u0012,d\\5\\d514faad0e76f5f8d71acd78e37f092a5e59087d\ng\n7app/src/main/java/com/ga/gettingactive/TaskAdapter.java\u0012,3\\c\\3cf006aff06dcd3c09688b39570e152c5916b41e\ni\n9app/src/main/java/com/ga/gettingactive/TaskContainer.java\u0012,3\\a\\3a3bcdf98406e89c523f178fb9fed5f0ed7dbf58\np\n@app/src/main/java/com/ga/gettingactive/ui/home/HomeFragment.java\u0012,d\\7\\d7e00c266806af3f83ae4af4ec5a07e107155e70
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/sonarlint/issuestore/index.pb	(revision ec624c62d2f68eaf5d9f3051064d3d1d35287555)
++++ .idea/sonarlint/issuestore/index.pb	(date 1591447232380)
+@@ -12,4 +12,8 @@
+ i
+ 9app/src/main/java/com/ga/gettingactive/TaskContainer.java,3\a\3a3bcdf98406e89c523f178fb9fed5f0ed7dbf58
+ p
+-@app/src/main/java/com/ga/gettingactive/ui/home/HomeFragment.java,d\7\d7e00c266806af3f83ae4af4ec5a07e107155e70
+\ No newline at end of file
++@app/src/main/java/com/ga/gettingactive/ui/home/HomeFragment.java,d\7\d7e00c266806af3f83ae4af4ec5a07e107155e70
++<
++Diagram.puml,8\d\8dd405e6b6e5b47f32061366b37dbbf7fad392b3
++S
++#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/container\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/nav_view\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"0dp\"\r\n        android:layout_marginEnd=\"0dp\"\r\n        android:background=\"?android:attr/windowBackground\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:menu=\"@menu/bottom_nav_menu\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/nav_host_fragment\"\r\n        android:name=\"androidx.navigation.fragment.NavHostFragment\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        app:defaultNavHost=\"true\"\r\n        app:layout_constraintBottom_toTopOf=\"@id/nav_view\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:navGraph=\"@navigation/mobile_navigation\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision ec624c62d2f68eaf5d9f3051064d3d1d35287555)
++++ app/src/main/res/layout/activity_main.xml	(date 1591447239618)
+@@ -1,4 +1,4 @@
+-<?xml version="1.0" encoding="utf-8"?>
++gi<?xml version="1.0" encoding="utf-8"?>
+ <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"

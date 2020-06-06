@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/Diagram.puml
+/.idea/sonarlint/

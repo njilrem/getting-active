@@ -13,3 +13,7 @@ i
 9app/src/main/java/com/ga/gettingactive/TaskContainer.java,3\a\3a3bcdf98406e89c523f178fb9fed5f0ed7dbf58
 p
 @app/src/main/java/com/ga/gettingactive/ui/home/HomeFragment.java,d\7\d7e00c266806af3f83ae4af4ec5a07e107155e70
+<
+Diagram.puml,8\d\8dd405e6b6e5b47f32061366b37dbbf7fad392b3
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
