@@ -16,14 +16,13 @@ import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.TaskContainer;
 import com.ga.gettingactive.R;
 import com.ga.gettingactive.TaskAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.ga.gettingactive.TaskContainer;
+import com.ga.gettingactive.TaskListDecorator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +36,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private TaskAdapter taskAdapter;
     private View root;
-    private String TAG = "HomeFragment";
+    private final String TAG = "HomeFragment";
+
 
     private FirebaseFirestore db = FirestoreDB.db;
     private DocumentReference userProfile;
@@ -57,8 +57,9 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void setupOngoingTasksView(){
+    private void setupOngoingTasksView() {
         recyclerView = root.findViewById(R.id.ongoing_tasks_list);
+        recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Collection<TaskContainer> tasks = new ArrayList<>();
         db.collection("tasks/firstBundle/tasks")
@@ -69,10 +70,10 @@ public class HomeFragment extends Fragment {
                             TaskContainer taskContainer = document.toObject(TaskContainer.class);
                             Log.d("TASK", String.valueOf(taskContainer));
                             tasks.add(taskContainer);
-                            if(!tasks.contains(taskContainer)){
+                            if (!tasks.contains(taskContainer)) {
                                 Log.d("ERROR TASKS", "MISSING");
-                            }else {
-                                Log.d("ERROR TASKS", "AVAILEBLE");
+                            } else {
+                                Log.d("ERROR TASKS", "AVAILABLE");
                             }
                         }
                         taskAdapter = new TaskAdapter();
@@ -87,31 +88,31 @@ public class HomeFragment extends Fragment {
 
 
     //TODO ADD TO VIEW
-   private void getCompletedTasks(){
-       FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-       if (user != null) {
-           String uid = user.getUid();
-           userProfile = db.document("users/" + uid);
-           userProfile.collection("archive")
-                   .get()
-                   .addOnCompleteListener(task -> {
-                       if (task.isSuccessful()) {
-                           for (QueryDocumentSnapshot document : task.getResult()) {
-                               TaskContainer taskContainer = document.toObject(TaskContainer.class);
-                               Log.d("TASK", String.valueOf(taskContainer));
-                               completedTasks.add(taskContainer);
-                               if(!completedTasks.contains(taskContainer)){
-                                   Log.d("ERROR TASKS", "MISSING");
-                               }else {
-                                   Log.d("ERROR TASKS", "AVaILaBLE");
-                               }
-                           }
-                       } else {
-                           Log.d(TAG, "Error getting documents: ", task.getException());
-                       }
-                   });
-       } else {
-           // No user is signed in
-       }
+    private void getCompletedTasks() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            userProfile = db.document("users/" + uid);
+            userProfile.collection("archive")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                TaskContainer taskContainer = document.toObject(TaskContainer.class);
+                                Log.d("TASK", String.valueOf(taskContainer));
+                                completedTasks.add(taskContainer);
+                                if (!completedTasks.contains(taskContainer)) {
+                                    Log.d("ERROR TASKS", "MISSING");
+                                } else {
+                                    Log.d("ERROR TASKS", "AVaILaBLE");
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+        } else {
+            // No user is signed in
+        }
     }
 }
