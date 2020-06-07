@@ -18,4 +18,5 @@
     <string name="task_tip_default">Task tip</string>
     <string name="tip_icon">Tip icon</string>
     <string name="task_tags_default">#hashtag #hashtag #hashtag</string>
+    <string name="anonymous_profile">anonymous profile picture</string>
 </resources>

@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         Log.d("Main Activity", "Getting Active");
-        //createSignInIntent();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            createSignInIntent();
+        }
     }
 
     public void createSignInIntent() {
