@@ -1,5 +1,6 @@
 package com.ga.gettingactive;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +26,6 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final List<TaskContainer> tasksList = new ArrayList<>();
-
 
     public void setItems(Collection<TaskContainer> tasks) {
         tasksList.addAll(tasks);
@@ -53,12 +55,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return tasksList.size();
     }
 
-    static class TaskViewHolder extends RecyclerView.ViewHolder{
+    class TaskViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleView;
         private final TextView descriptionView;
         private final TextView tipView;
         private final TextView tagsView;
         private final Button button;
+
+        private final String myTasks = "myTasks";
+        private final String archive = "archive";
+        private final String userTasks = "tasks";
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,12 +75,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             button = itemView.findViewById(R.id.button);
         }
 
-        public void bind(TaskContainer task){
+        public void bind(TaskContainer task) {
             titleView.setText(task.getTitle());
             descriptionView.setText(task.getDescription());
             tipView.setText(task.getTip());
             tagsView.setText(task.getHashtags());
             button.setOnClickListener(v -> {
+                int position = tasksList.indexOf(task);
+                tasksList.remove(position);
+                notifyItemRemoved(position);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
@@ -84,15 +93,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     User userObj = new User(uid, firstname, lastname);
                     DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
                     userProfileDoc.set(userObj, SetOptions.merge());
-                    userProfileDoc.collection("myTasks").add(task);
+                    Query query = userProfileDoc.collection(userTasks).whereEqualTo("title", task.getTitle());
+                    query.get().addOnCompleteListener(snapshotTask -> {
+                        if (snapshotTask.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : snapshotTask.getResult()) {
+                                Log.d("Delete from tasks", "add to my tasks");
+                                userProfileDoc.collection(userTasks).document(document.getId()).delete();
+                                userProfileDoc.collection(myTasks).add(task);
+                            }
+                        } else {
+                            userProfileDoc.collection(myTasks).whereEqualTo("title", task.getTitle())
+                                    .get().addOnCompleteListener(userTasksSnapshot -> {
+                                if (userTasksSnapshot.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : userTasksSnapshot.getResult()) {
+                                        Log.d("ADD TO ARCHIVE", "DELETE FROM MY TASKS");
+                                        userProfileDoc.collection(archive).add(task);
+                                        userProfileDoc.collection(myTasks).document(document.getId()).delete();
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
     }
-
-
-
-
 
 
 }

@@ -67,7 +67,7 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/task_viewholer_button_text"
+        android:text="@string/task_viewholder_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tip_text"
         app:layout_constraintStart_toStartOf="parent"

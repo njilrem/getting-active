@@ -1,4 +1,4 @@
-package com.ga.gettingactive.ui.dashboard;
+package com.ga.gettingactive.ui.ongoingTasks;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +29,10 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardFragment extends Fragment {
+public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
 
     private static final String TAG = "OngoingTasksFragment";
-    private DashboardViewModel dashboardViewModel;
+    private OngoingTasksViewModel ongoingTasksViewModel;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private final FirebaseFirestore db = FirestoreDB.db;
@@ -42,10 +42,11 @@ public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        ongoingTasksViewModel = new ViewModelProvider(this).get(OngoingTasksViewModel.class);
         root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        getOngoingTasks();
+        if(savedInstanceState == null)
+            getOngoingTasks();
 
         return root;
     }
