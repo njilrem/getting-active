@@ -85,18 +85,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signOut(View view) {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
-    }
-
     public void delete() {
         AuthUI.getInstance()
                 .delete(this)
                 .addOnCompleteListener(task -> Log.d(TAG, "Deleted user successfully"));
     }
 
-
+    public void signOut(View view) {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
+    }
 
 }
