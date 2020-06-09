@@ -1,4 +1,4 @@
-package com.ga.gettingactive.ui.notifications;
+package com.ga.gettingactive.ui.profile;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class NotificationsFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private ProfileViewModel profileViewModel;
     private View root;
     private final FirebaseFirestore db = FirestoreDB.db;
     private TaskAdapter taskAdapter;
@@ -45,8 +41,8 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        profileViewModel =
+                new ViewModelProvider(this).get(ProfileViewModel.class);
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView usernameText = root.findViewById(R.id.text_username);
         final TextView progressText = root.findViewById(R.id.progress_text);
@@ -86,7 +82,6 @@ public class NotificationsFragment extends Fragment {
                             }
                             switch (completedTasks.size()){
                                 case 0: {
-
                                     break;
                                 }
                                 default: {

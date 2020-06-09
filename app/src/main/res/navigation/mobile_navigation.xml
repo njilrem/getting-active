@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.ga.gettingactive.ui.home.HomeFragment"
+        android:name="com.ga.gettingactive.ui.userTasks.UserTasksFragment"
         android:label="@string/title_current_tasks"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.ga.gettingactive.ui.dashboard.DashboardFragment"
+        android:name="com.ga.gettingactive.ui.ongoingTasks.OngoingTasksFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.ga.gettingactive.ui.notifications.NotificationsFragment"
+        android:name="com.ga.gettingactive.ui.profile.ProfileFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
