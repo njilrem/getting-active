@@ -19,4 +19,6 @@
     <string name="tip_icon">Tip icon</string>
     <string name="task_tags_default">#hashtag #hashtag #hashtag</string>
     <string name="anonymous_profile">anonymous profile picture</string>
+    <string name="progress_string">You done total of %1$d tasks.</string>
+    <string name="task_viewholer_button_text">Я в ділі!</string>
 </resources>

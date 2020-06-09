@@ -12,19 +12,34 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.R;
+import com.ga.gettingactive.TaskAdapter;
+import com.ga.gettingactive.TaskContainer;
+import com.ga.gettingactive.TaskListDecorator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
+    private View root;
+    private final FirebaseFirestore db = FirestoreDB.db;
+    private TaskAdapter taskAdapter;
+    private final String TAG = "PROFILE";
+    private final List<TaskContainer> completedTasks = new ArrayList<>();
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -32,7 +47,7 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView usernameText = root.findViewById(R.id.text_username);
         final TextView progressText = root.findViewById(R.id.progress_text);
         //NAME
@@ -48,7 +63,46 @@ public class NotificationsFragment extends Fragment {
             }
         });
         usernameText.setText(name);
-        progressText.setText("You done total of " + doneTasksCount[0] + " tasks.");
+        progressText.setText(getString(R.string.progress_string, doneTasksCount[0]));
         return root;
+    }
+
+    private void getCompletedTasks() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            RecyclerView recyclerView = root.findViewById(R.id.ongoing_tasks_list);
+            recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            String uid = user.getUid();
+            DocumentReference userProfile = db.document("users/" + uid);
+            userProfile.collection("archive")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                TaskContainer taskContainer = document.toObject(TaskContainer.class);
+                                Log.d("TASK", String.valueOf(taskContainer));
+                                completedTasks.add(taskContainer);
+                            }
+                            switch (completedTasks.size()){
+                                case 0: {
+
+                                    break;
+                                }
+                                default: {
+
+                                }
+                            }
+                            taskAdapter = new TaskAdapter();
+                            recyclerView.setAdapter(taskAdapter);
+                            taskAdapter.setItems(completedTasks);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+        } else {
+            // No user is signed in
+            Log.e("LOGIN", "LOGIN ERROR");
+        }
     }
 }

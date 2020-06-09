@@ -18,11 +18,13 @@ import com.ga.gettingactive.R;
 import com.ga.gettingactive.TaskAdapter;
 import com.ga.gettingactive.TaskContainer;
 import com.ga.gettingactive.TaskListDecorator;
+import com.ga.gettingactive.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,33 +88,4 @@ public class HomeFragment extends Fragment {
         Log.d("TASKS", String.valueOf(tasks.size()));
     }
 
-
-    //TODO ADD TO VIEW
-    private void getCompletedTasks() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-            userProfile = db.document("users/" + uid);
-            userProfile.collection("archive")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                TaskContainer taskContainer = document.toObject(TaskContainer.class);
-                                Log.d("TASK", String.valueOf(taskContainer));
-                                completedTasks.add(taskContainer);
-                                if (!completedTasks.contains(taskContainer)) {
-                                    Log.d("ERROR TASKS", "MISSING");
-                                } else {
-                                    Log.d("ERROR TASKS", "AVaILaBLE");
-                                }
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    });
-        } else {
-            // No user is signed in
-        }
-    }
 }
