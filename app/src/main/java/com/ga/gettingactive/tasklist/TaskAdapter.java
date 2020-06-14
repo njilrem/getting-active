@@ -28,8 +28,16 @@ import java.util.Collection;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-
+    private final String buttonText;
     private final List<TaskContainer> tasksList = new ArrayList<>();
+
+    public TaskAdapter(){
+        this.buttonText = null;
+    }
+
+    public TaskAdapter(String buttonText) {
+        this.buttonText = buttonText;
+    }
 
     public void setItems(Collection<TaskContainer> tasks) {
         tasksList.addAll(tasks);
@@ -51,7 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.bind(tasksList.get(position));
+        holder.bind(tasksList.get(position), buttonText);
     }
 
     @Override
@@ -80,52 +88,58 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             button = itemView.findViewById(R.id.button);
         }
 
-        public void bind(TaskContainer task) {
+        public void bind(TaskContainer task, String buttonText) {
             titleView.setText(task.getTitle());
             descriptionView.setText(task.getDescription());
             tipView.setText(task.getTip());
             tagsView.setText(task.getHashtags());
-            button.setOnClickListener(v -> {
-                int position = tasksList.indexOf(task);
-                tasksList.remove(position);
-                notifyItemRemoved(position);
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    String uid = user.getUid();
-                    String name = user.getDisplayName();
-                    String firstname = name.split(" ")[0];
-                    String lastname = name.split(" ")[1];
-                    User userObj = new User(uid, firstname, lastname);
-                    DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
-                    userProfileDoc.set(userObj, SetOptions.merge());
-                    Query query = userProfileDoc.collection(userTasks).whereEqualTo("title", task.getTitle());
-                    query.get().addOnCompleteListener(snapshotTask -> {
-                        if (snapshotTask.isSuccessful()) {
-                            QuerySnapshot documents = snapshotTask.getResult();
-                            if (!documents.isEmpty()) {
-                                for (QueryDocumentSnapshot document : documents) {
-                                    Log.d(TAG, "add to my tasks");
-                                    userProfileDoc.collection(userTasks).document(document.getId()).delete();
-                                    userProfileDoc.collection(myTasks).add(task);
-                                }
-                            }else {
-                                userProfileDoc.collection(myTasks).whereEqualTo("title", task.getTitle())
-                                        .get().addOnCompleteListener(userTasksSnapshot -> {
-                                    if (userTasksSnapshot.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : userTasksSnapshot.getResult()) {
-                                            Log.d(TAG, "DELETE FROM MY TASKS");
-                                            userProfileDoc.collection(archive).add(task);
-                                            userProfileDoc.collection(myTasks).document(document.getId()).delete();
-                                        }
+            if(buttonText!=null) {
+                button.setText(buttonText);
+                    button.setOnClickListener(v -> {
+                    int position = tasksList.indexOf(task);
+                    tasksList.remove(position);
+                    notifyItemRemoved(position);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) {
+                        String uid = user.getUid();
+                        String name = user.getDisplayName();
+                        String firstname = name.split(" ")[0];
+                        String lastname = name.split(" ")[1];
+                        User userObj = new User(uid, firstname, lastname);
+                        DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
+                        userProfileDoc.set(userObj, SetOptions.merge());
+                        Query query = userProfileDoc.collection(userTasks).whereEqualTo("title", task.getTitle());
+                        query.get().addOnCompleteListener(snapshotTask -> {
+                            if (snapshotTask.isSuccessful()) {
+                                QuerySnapshot documents = snapshotTask.getResult();
+                                if (!documents.isEmpty()) {
+                                    for (QueryDocumentSnapshot document : documents) {
+                                        Log.d(TAG, "add to my tasks");
+                                        userProfileDoc.collection(userTasks).document(document.getId()).delete();
+                                        userProfileDoc.collection(myTasks).add(task);
                                     }
-                                });
+                                } else {
+                                    userProfileDoc.collection(myTasks).whereEqualTo("title", task.getTitle())
+                                            .get().addOnCompleteListener(userTasksSnapshot -> {
+                                        if (userTasksSnapshot.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : userTasksSnapshot.getResult()) {
+                                                Log.d(TAG, "DELETE FROM MY TASKS");
+                                                userProfileDoc.collection(archive).add(task);
+                                                userProfileDoc.collection(myTasks).document(document.getId()).delete();
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Log.d("TAG", "Error getting tasks");
                             }
-                        } else {
-                            Log.d("TAG", "Error getting tasks");
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }else{
+                Log.d("TASK_ADAPTER", "STRING IS NULL");
+                button.setVisibility(View.GONE);
+            }
         }
     }
 

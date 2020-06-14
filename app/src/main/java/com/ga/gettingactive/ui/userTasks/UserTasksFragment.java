@@ -28,7 +28,6 @@ import java.util.Objects;
 
 public class UserTasksFragment extends Fragment {
 
-    private RecyclerView.LayoutManager layoutManager;
     private TaskAdapter taskAdapter;
     private View root;
     private final String TAG = "UserTasksFragment";
@@ -63,7 +62,7 @@ public class UserTasksFragment extends Fragment {
                                 TaskContainer task = document.toObject(TaskContainer.class);
                                 tasks.add(task);
                             }
-                            taskAdapter = new TaskAdapter();
+                            taskAdapter = new TaskAdapter(getString(R.string.task_accepted));
                             recyclerView.setAdapter(taskAdapter);
                             taskAdapter.setItems(tasks);
                         } else {

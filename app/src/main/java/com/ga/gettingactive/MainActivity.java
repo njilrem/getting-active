@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             createSignInIntent();
         }
-        Intent intent = new Intent(this, PreferencesActivity.class);
+        Intent intent = new Intent(this, ArchiveActivity.class);
         startActivity(intent);
+
     }
 
     public void createSignInIntent() {

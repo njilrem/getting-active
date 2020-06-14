@@ -77,7 +77,7 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
                                 final String text = "You currently have no ongoing tasks. try to choose some from All Tasks page";
                                 noOngoingTasksTextView.setText(text);
                             }
-                            taskAdapter = new TaskAdapter();
+                            taskAdapter = new TaskAdapter(getString(R.string.task_complete));
                             recyclerView.setAdapter(taskAdapter);
                             taskAdapter.setItems(completedTasks);
                         } else {

@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.R;
-import com.ga.gettingactive.tasklist.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefListViewHolder> {
     private final ArrayList<String> categoryNames;
@@ -27,7 +25,6 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
         notifyDataSetChanged();
     }
 
-    private final HashMap<String, Boolean> categoryStatuses = new HashMap<>();
     @NonNull
     @Override
     public PrefListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +45,7 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
     }
 
     class PrefListViewHolder extends RecyclerView.ViewHolder{
-        private Button button;
+        private final Button button;
         private boolean activated;
 
 
