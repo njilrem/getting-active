@@ -69,7 +69,11 @@ public class ProfileFragment extends Fragment {
                 if (task.isSuccessful()) {
                     doneTasksCount[0] = task.getResult().size();
                     Log.d("DONE TASK", String.valueOf(doneTasksCount[0]));
-                    progressText.setText(getString(R.string.progress_string, doneTasksCount[0]));
+                    if (doneTasksCount[0] == 0) {
+                        progressText.setText(getString(R.string.progress_string_no_tasks));
+                    } else {
+                        progressText.setText(getString(R.string.progress_string, doneTasksCount[0]));
+                    }
                 }
             });
             usernameText.setText(name);

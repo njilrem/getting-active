@@ -25,16 +25,16 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="89dp"
-        android:layout_height="83dp"
+        android:layout_width="132dp"
+        android:layout_height="128dp"
         android:contentDescription="@string/anonymous_profile"
         android:gravity="center_horizontal"
+        android:src="@mipmap/profile_picture"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/text_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/bottle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/progress_text"
