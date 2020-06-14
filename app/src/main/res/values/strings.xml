@@ -22,4 +22,6 @@
     <string name="progress_string">Ви зробили %1$d завдань. Продовжуйте в тому ж дусі!</string>
     <string name="task_viewholder_button_text">Я в ділі!</string>
     <string name="progress_string_no_tasks">\"Ви ще не виконали завдань\"</string>
+    <string name="select_pref_text">Виберіть ваші цілі:</string>
+    <string name="archive_tasks_label">Архів завдань.</string>
 </resources>
