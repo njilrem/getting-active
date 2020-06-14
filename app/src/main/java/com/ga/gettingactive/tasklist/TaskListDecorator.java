@@ -1,4 +1,4 @@
-package com.ga.gettingactive;
+package com.ga.gettingactive.tasklist;
 
 import android.graphics.Rect;
 import android.view.View;
