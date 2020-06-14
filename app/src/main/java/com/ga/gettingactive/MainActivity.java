@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.ga.gettingactive.pref.PreferencesActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             createSignInIntent();
         }
+        Intent intent = new Intent(this, PreferencesActivity.class);
+        startActivity(intent);
     }
 
     public void createSignInIntent() {

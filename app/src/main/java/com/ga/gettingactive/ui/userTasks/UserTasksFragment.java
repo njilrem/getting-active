@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.R;
-import com.ga.gettingactive.TaskAdapter;
-import com.ga.gettingactive.TaskContainer;
-import com.ga.gettingactive.TaskListDecorator;
+import com.ga.gettingactive.tasklist.TaskAdapter;
+import com.ga.gettingactive.tasklist.TaskContainer;
+import com.ga.gettingactive.tasklist.TaskListDecorator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;

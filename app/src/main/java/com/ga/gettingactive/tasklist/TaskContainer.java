@@ -1,4 +1,4 @@
-package com.ga.gettingactive;
+package com.ga.gettingactive.tasklist;
 
 public class TaskContainer {
     private String title;

@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.R;
-import com.ga.gettingactive.TaskAdapter;
-import com.ga.gettingactive.TaskContainer;
-import com.ga.gettingactive.TaskListDecorator;
+import com.ga.gettingactive.tasklist.TaskAdapter;
+import com.ga.gettingactive.tasklist.TaskContainer;
+import com.ga.gettingactive.tasklist.TaskListDecorator;
 import com.ga.gettingactive.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,16 +72,10 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
                                 Log.d("TASK", String.valueOf(taskContainer));
                                 completedTasks.add(taskContainer);
                             }
-                            switch (completedTasks.size()){
-                                case 0: {
-                                    TextView noOngoingTasksTextView = root.findViewById(R.id.noTasksTextView);
-                                    final String text = "You currently have no ongoing tasks. try to choose some from All Tasks page";
-                                    noOngoingTasksTextView.setText(text);
-                                    break;
-                                }
-                                default: {
-
-                                }
+                            if (completedTasks.size() == 0) {
+                                TextView noOngoingTasksTextView = root.findViewById(R.id.noTasksTextView);
+                                final String text = "You currently have no ongoing tasks. try to choose some from All Tasks page";
+                                noOngoingTasksTextView.setText(text);
                             }
                             taskAdapter = new TaskAdapter();
                             recyclerView.setAdapter(taskAdapter);
