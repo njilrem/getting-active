@@ -16,9 +16,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        Log.d("Main Activity", "Getting Active");
+
+        PeriodicWorkRequest updateRequest =
+                new PeriodicWorkRequest.Builder(TaskUpdateWorker.class, 1, TimeUnit.HOURS)
+                        .build();
+
+        WorkManager.getInstance(getApplicationContext())
+                .enqueue(updateRequest);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             createSignInIntent();

@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,6 +66,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private final String myTasks = "myTasks";
         private final String archive = "archive";
         private final String userTasks = "tasks";
+        private final String TAG = "Delete from tasks";
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,22 +98,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     Query query = userProfileDoc.collection(userTasks).whereEqualTo("title", task.getTitle());
                     query.get().addOnCompleteListener(snapshotTask -> {
                         if (snapshotTask.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : snapshotTask.getResult()) {
-                                Log.d("Delete from tasks", "add to my tasks");
-                                userProfileDoc.collection(userTasks).document(document.getId()).delete();
-                                userProfileDoc.collection(myTasks).add(task);
+                            QuerySnapshot documents = snapshotTask.getResult();
+                            if (!documents.isEmpty()) {
+                                for (QueryDocumentSnapshot document : documents) {
+                                    Log.d(TAG, "add to my tasks");
+                                    userProfileDoc.collection(userTasks).document(document.getId()).delete();
+                                    userProfileDoc.collection(myTasks).add(task);
+                                }
+                            }else {
+                                userProfileDoc.collection(myTasks).whereEqualTo("title", task.getTitle())
+                                        .get().addOnCompleteListener(userTasksSnapshot -> {
+                                    if (userTasksSnapshot.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : userTasksSnapshot.getResult()) {
+                                            Log.d(TAG, "DELETE FROM MY TASKS");
+                                            userProfileDoc.collection(archive).add(task);
+                                            userProfileDoc.collection(myTasks).document(document.getId()).delete();
+                                        }
+                                    }
+                                });
                             }
                         } else {
-                            userProfileDoc.collection(myTasks).whereEqualTo("title", task.getTitle())
-                                    .get().addOnCompleteListener(userTasksSnapshot -> {
-                                if (userTasksSnapshot.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : userTasksSnapshot.getResult()) {
-                                        Log.d("ADD TO ARCHIVE", "DELETE FROM MY TASKS");
-                                        userProfileDoc.collection(archive).add(task);
-                                        userProfileDoc.collection(myTasks).document(document.getId()).delete();
-                                    }
-                                }
-                            });
+                            Log.d("TAG", "Error getting tasks");
                         }
                     });
                 }
