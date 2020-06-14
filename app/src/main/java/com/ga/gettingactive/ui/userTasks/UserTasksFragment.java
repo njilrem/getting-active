@@ -55,13 +55,12 @@ public class UserTasksFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             DocumentReference userProfile = FirestoreDB.db.collection("users").document(user.getUid());
-            FirestoreDB.db.collection("tasks/secondBundle/tasks")
+            userProfile.collection("tasks")
                     .get()
                     .addOnCompleteListener(snapshotTask -> {
                         if (snapshotTask.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
                                 TaskContainer task = document.toObject(TaskContainer.class);
-                                userProfile.collection("tasks").document(document.getId()).set(task);
                                 tasks.add(task);
                             }
                             taskAdapter = new TaskAdapter();

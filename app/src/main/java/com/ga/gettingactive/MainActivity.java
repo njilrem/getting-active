@@ -17,13 +17,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 123;
+    public static final int RC_SIGN_IN = 123;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -39,7 +42,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        Log.d("Main Activity", "Getting Active");
+
+        PeriodicWorkRequest updateRequest =
+                new PeriodicWorkRequest.Builder(TaskUpdateWorker.class, 1, TimeUnit.HOURS)
+                        .build();
+
+        WorkManager.getInstance(getApplicationContext())
+                .enqueue(updateRequest);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             createSignInIntent();
@@ -94,10 +104,5 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> Log.d(TAG, "Deleted user successfully"));
     }
 
-    public void signOut(View view) {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
-    }
 
 }

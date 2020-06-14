@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/material_green_a200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/material_green_700</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -18,7 +18,7 @@
         <!-- Required for sign-in flow styling -->
         <item name="colorPrimary">@color/material_green_500</item>
         <item name="colorPrimaryDark">@color/material_green_700</item>
-        <item name="colorAccent">@color/material_purple_a700</item>
+        <item name="colorAccent">@color/material_green_700</item>
 
         <item name="colorControlNormal">@color/material_green_500</item>
         <item name="colorControlActivated">@color/material_lime_a700</item>

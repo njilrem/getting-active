@@ -12,14 +12,13 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="sign_out">Sign out</string>
+    <string name="sign_out">Вийти</string>
     <string name="task_description_default">Task description</string>
     <string name="task_title_default">Task title</string>
     <string name="task_tip_default">Task tip</string>
     <string name="tip_icon">Tip icon</string>
     <string name="task_tags_default">#hashtag #hashtag #hashtag</string>
     <string name="anonymous_profile">anonymous profile picture</string>
-    <string name="progress_string">You done total of %1$d tasks.</string>
+    <string name="progress_string">Ви зробили %1$d завдань. Продовжуйте в тому ж дусі!</string>
     <string name="task_viewholder_button_text">Я в ділі!</string>
-    <string name="select_pref_text">Select your preferences here.</string>
 </resources>
