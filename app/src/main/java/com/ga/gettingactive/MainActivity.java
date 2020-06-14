@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 123;
+    public static final int RC_SIGN_IN = 123;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -101,10 +101,5 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> Log.d(TAG, "Deleted user successfully"));
     }
 
-    public void signOut(View view) {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
-    }
 
 }

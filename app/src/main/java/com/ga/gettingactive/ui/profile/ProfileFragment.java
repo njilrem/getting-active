@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.auth.AuthUI;
 import com.ga.gettingactive.FirestoreDB;
+import com.ga.gettingactive.MainActivity;
 import com.ga.gettingactive.R;
 import com.ga.gettingactive.TaskAdapter;
 import com.ga.gettingactive.TaskContainer;
@@ -26,7 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
@@ -46,25 +51,50 @@ public class ProfileFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView usernameText = root.findViewById(R.id.text_username);
         final TextView progressText = root.findViewById(R.id.progress_text);
-        //NAME
-        String name = user.getDisplayName();
-        String userUID = user.getUid();
-        DocumentReference userDocument = FirestoreDB.db.document("users/" + userUID);
-        CollectionReference userArchive = userDocument.collection("archive");
-        final int[] doneTasksCount = {0};
-        userArchive.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                doneTasksCount[0] = task.getResult().size();
-                Log.d("DONE TASK", String.valueOf(doneTasksCount[0]));
-            }
+        final Button signOutButton = root.findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(v -> {
+            AuthUI.getInstance()
+                    .signOut(requireContext())
+                    .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
+            createSignInIntent();
         });
-        usernameText.setText(name);
-        progressText.setText(getString(R.string.progress_string, doneTasksCount[0]));
+        //NAME
+        if (user != null) {
+            String name = user.getDisplayName();
+            String userUID = user.getUid();
+            DocumentReference userDocument = FirestoreDB.db.document("users/" + userUID);
+            CollectionReference userArchive = userDocument.collection("archive");
+            final int[] doneTasksCount = {0};
+            userArchive.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    doneTasksCount[0] = task.getResult().size();
+                    Log.d("DONE TASK", String.valueOf(doneTasksCount[0]));
+                    progressText.setText(getString(R.string.progress_string, doneTasksCount[0]));
+                }
+            });
+            usernameText.setText(name);
+        }
         return root;
     }
 
+    public void createSignInIntent() {
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setLogo(R.mipmap.ic_launcher)
+                        .setTheme(R.style.GreenTheme)
+                        .build(),
+                MainActivity.RC_SIGN_IN);
+    }
+
     private void getCompletedTasks() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             RecyclerView recyclerView = root.findViewById(R.id.ongoing_tasks_list);
             recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
@@ -80,7 +110,7 @@ public class ProfileFragment extends Fragment {
                                 Log.d("TASK", String.valueOf(taskContainer));
                                 completedTasks.add(taskContainer);
                             }
-                            switch (completedTasks.size()){
+                            switch (completedTasks.size()) {
                                 case 0: {
                                     break;
                                 }
