@@ -1,4 +1,4 @@
-package com.ga.gettingactive;
+package com.ga.gettingactive.tasklist;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ga.gettingactive.FirestoreDB;
+import com.ga.gettingactive.R;
+import com.ga.gettingactive.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
