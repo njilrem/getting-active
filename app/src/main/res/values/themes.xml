@@ -25,11 +25,14 @@
         <item name="colorControlHighlight">@color/material_green_a200</item>
         <item name="android:windowBackground">@color/material_green_50</item>
     </style>
-
+    <style name="Noteworthy" parent="Theme.GettingActive">
+        <item name="fontFamily">notewo</item>
+    </style>
     <style name="Theme.GettingActive.AppBarOverlay">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
 
     <style name="Theme.GettingActive.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

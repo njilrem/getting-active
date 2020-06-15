@@ -107,8 +107,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 button.setText(buttonText);
                     button.setOnClickListener(v -> {
                     int position = tasksList.indexOf(task);
-                    tasksList.remove(position);
-                    notifyItemRemoved(position);
+                    if(position!=-1) {
+                        tasksList.remove(position);
+                        notifyItemRemoved(position);
+                    }
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) {
                         DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + user.getUid());

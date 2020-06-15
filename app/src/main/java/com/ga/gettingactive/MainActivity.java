@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
             userProfileDoc.set(userObj, SetOptions.merge());
         }
+        Intent intent = new Intent(this, PreferencesActivity.class);
+        startActivity(intent);
     }
 
     public void createSignInIntent() {

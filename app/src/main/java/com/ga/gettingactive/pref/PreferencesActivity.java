@@ -43,6 +43,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
     // HAS A BUG WHEN YOU HAVE YO DRAG A SCREEN TO UPDATE VIEW
     private void setupRecyclerView() {
+        Log.d("A", "setupRecyclerView");
         prefsView = findViewById(R.id.prefs_recycler_view);
         prefsView.setLayoutManager(new CustomGridLayout(this, 2));
         ArrayList<String> categoryNames = new ArrayList<>();
