@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
-
+    private static final String OngoingTasksKey = "ONGOING_TASKS";
     private static final String TAG = "OngoingTasksFragment";
     private OngoingTasksViewModel ongoingTasksViewModel;
     private RecyclerView recyclerView;
@@ -43,9 +43,19 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         ongoingTasksViewModel = new ViewModelProvider(this).get(OngoingTasksViewModel.class);
         root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-        if(savedInstanceState == null)
+        recyclerView = root.findViewById(R.id.ongoing_tasks_list);
+        recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        taskAdapter = new TaskAdapter(getString(R.string.task_complete));
+        recyclerView.setAdapter(taskAdapter);
+        if(savedInstanceState == null) {
+            Log.d(TAG, "Calling from db!");
             getOngoingTasks();
+        }
+        else{
+            Log.d(TAG, "No db call was performed! Saved instance used instead!");
+            taskAdapter.setItems(savedInstanceState.getParcelableArrayList(OngoingTasksKey));
+        }
 
         return root;
     }
@@ -53,9 +63,7 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
     private void getOngoingTasks() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            recyclerView = root.findViewById(R.id.ongoing_tasks_list);
-            recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
             String uid = user.getUid();
             String name = user.getDisplayName();
             String firstname = name.split(" ")[0];
@@ -77,8 +85,6 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
                                 final String text = "You currently have no ongoing tasks. try to choose some from All Tasks page";
                                 noOngoingTasksTextView.setText(text);
                             }
-                            taskAdapter = new TaskAdapter(getString(R.string.task_complete));
-                            recyclerView.setAdapter(taskAdapter);
                             taskAdapter.setItems(completedTasks);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -88,5 +94,11 @@ public class OngoingTasksFragment extends androidx.fragment.app.Fragment {
             // No user is signed in
             Log.e("LOGIN", "LOGIN ERROR");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(OngoingTasksKey, taskAdapter.getTasksList());
     }
 }

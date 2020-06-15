@@ -28,9 +28,10 @@ import java.util.Objects;
 
 public class UserTasksFragment extends Fragment {
 
+    private static final String UserTasksKey = "USER_TASKS";
+    private final String TAG = "UserTasksFragment";
     private TaskAdapter taskAdapter;
     private View root;
-    private final String TAG = "UserTasksFragment";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,16 +41,24 @@ public class UserTasksFragment extends Fragment {
         }
         UserTasksViewModel userTasksViewModel = new ViewModelProvider(this).get(UserTasksViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
-
-        setupOngoingTasksView();
+        RecyclerView recyclerView = root.findViewById(R.id.ongoing_tasks_list);
+        recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        taskAdapter = new TaskAdapter(getString(R.string.task_accepted));
+        recyclerView.setAdapter(taskAdapter);
+        if (savedInstanceState == null) {
+            Log.d(TAG, "Calling from db!");
+            setupOngoingTasksView();
+        } else {
+            Log.d(TAG, "No db call was performed! Saved instance used instead!");
+            taskAdapter.setItems(savedInstanceState.getParcelableArrayList(UserTasksKey));
+        }
 
         return root;
     }
 
     private void setupOngoingTasksView() {
-        RecyclerView recyclerView = root.findViewById(R.id.ongoing_tasks_list);
-        recyclerView.addItemDecoration(new TaskListDecorator((int) (root.getResources().getDimension(R.dimen.tasks_list_margin))));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         List<TaskContainer> tasks = new ArrayList<>();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -62,8 +71,6 @@ public class UserTasksFragment extends Fragment {
                                 TaskContainer task = document.toObject(TaskContainer.class);
                                 tasks.add(task);
                             }
-                            taskAdapter = new TaskAdapter(getString(R.string.task_accepted));
-                            recyclerView.setAdapter(taskAdapter);
                             taskAdapter.setItems(tasks);
                         } else {
                             Log.w(TAG, "Error getting documents.", snapshotTask.getException());
@@ -72,4 +79,9 @@ public class UserTasksFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(UserTasksKey, taskAdapter.getTasksList());
+    }
 }

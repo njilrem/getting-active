@@ -23,13 +23,14 @@ import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private final String buttonText;
-    private final List<TaskContainer> tasksList = new ArrayList<>();
+    private final ArrayList<TaskContainer> tasksList = new ArrayList<>();
 
     public TaskAdapter(){
         this.buttonText = null;
@@ -42,6 +43,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void setItems(Collection<TaskContainer> tasks) {
         tasksList.addAll(tasks);
         notifyDataSetChanged();
+    }
+
+    public ArrayList<TaskContainer> getTasksList() {
+        return tasksList;
     }
 
     public void clearItems() {
@@ -66,6 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public int getItemCount() {
         return tasksList.size();
     }
+
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleView;

@@ -58,24 +58,21 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
             button.setText(text);
             activated = active;
             button.setPressed(activated);
-            button.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // show interest in events resulting from ACTION_DOWN
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) return true;
+            button.setOnTouchListener((v, event) -> {
+                // show interest in events resulting from ACTION_DOWN
+                if (event.getAction() == MotionEvent.ACTION_DOWN) return true;
 
-                    // don't handle event unless its ACTION_UP so "doSomething()" only runs once.
-                    if (event.getAction() != MotionEvent.ACTION_UP) return false;
-                    if(activated){
-                        selectedCategories.remove((Integer)categoryID);
-                    }else{
-                        selectedCategories.add(categoryID);
-                    }
-                    Log.d("ARRAYLIST_STATUS", Arrays.toString(selectedCategories.toArray()));
-                        activated = !activated;
-                        button.setPressed(activated);
-                        return true;
+                // don't handle event unless its ACTION_UP so "doSomething()" only runs once.
+                if (event.getAction() != MotionEvent.ACTION_UP) return false;
+                if(activated){
+                    selectedCategories.remove((Integer)categoryID);
+                }else{
+                    selectedCategories.add(categoryID);
                 }
+                Log.d("ARRAYLIST_STATUS", Arrays.toString(selectedCategories.toArray()));
+                    activated = !activated;
+                    button.setPressed(activated);
+                    return true;
             });
         }
     }
