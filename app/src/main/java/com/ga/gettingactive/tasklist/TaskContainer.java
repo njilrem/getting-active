@@ -1,9 +1,11 @@
 package com.ga.gettingactive.tasklist;
 
+import java.util.ArrayList;
+
 public class TaskContainer {
     private String title;
     private String description;
-    private String hashtags;
+    private ArrayList<String> hashtags;
     private String tip;
 
     public TaskContainer(){
@@ -18,7 +20,7 @@ public class TaskContainer {
 
     public String getTip() { return tip; }
 
-    public String getHashtags() {
+    public ArrayList<String> getHashtags() {
         return hashtags;
     }
 

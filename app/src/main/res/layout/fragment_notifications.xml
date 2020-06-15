@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.117" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/archive_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/archive_tasks_label"
@@ -67,5 +67,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/archive_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

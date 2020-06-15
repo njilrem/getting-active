@@ -24,7 +24,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_archive" />
+    <include
+        layout="@layout/content_archive"
+        android:layout_height="608dp"
+        android:layout_width="TODO" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

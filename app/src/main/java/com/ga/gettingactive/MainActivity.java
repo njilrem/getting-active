@@ -11,6 +11,8 @@ import com.ga.gettingactive.pref.PreferencesActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.SetOptions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -53,10 +55,15 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             createSignInIntent();
+        } else {
+            String uid = user.getUid();
+            String name = user.getDisplayName();
+            String firstname = name.split(" ")[0];
+            String lastname = name.split(" ")[1];
+            User userObj = new User(uid, firstname, lastname);
+            DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
+            userProfileDoc.set(userObj, SetOptions.merge());
         }
-        Intent intent = new Intent(this, ArchiveActivity.class);
-        startActivity(intent);
-
     }
 
     public void createSignInIntent() {

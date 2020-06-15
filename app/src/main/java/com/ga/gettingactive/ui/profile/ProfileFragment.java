@@ -1,5 +1,6 @@
 package com.ga.gettingactive.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.ga.gettingactive.ArchiveActivity;
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.MainActivity;
 import com.ga.gettingactive.R;
@@ -56,6 +58,11 @@ public class ProfileFragment extends Fragment {
                     .signOut(requireContext())
                     .addOnCompleteListener(task -> Log.d(TAG, "Signed out successfully"));
             createSignInIntent();
+        });
+        final Button archiveButton = root.findViewById(R.id.archive_button);
+        archiveButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ArchiveActivity.class);
+            getActivity().startActivity(intent);
         });
         //NAME
         if (user != null) {

@@ -92,7 +92,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             titleView.setText(task.getTitle());
             descriptionView.setText(task.getDescription());
             tipView.setText(task.getTip());
-            tagsView.setText(task.getHashtags());
+            ArrayList<String> hashtags = task.getHashtags();
+            StringBuilder hashtagLabel = new StringBuilder();
+            for (String s : hashtags)
+                hashtagLabel.append(s);
+            tagsView.setText(hashtagLabel);
             if(buttonText!=null) {
                 button.setText(buttonText);
                     button.setOnClickListener(v -> {
@@ -101,13 +105,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     notifyItemRemoved(position);
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) {
-                        String uid = user.getUid();
-                        String name = user.getDisplayName();
-                        String firstname = name.split(" ")[0];
-                        String lastname = name.split(" ")[1];
-                        User userObj = new User(uid, firstname, lastname);
-                        DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
-                        userProfileDoc.set(userObj, SetOptions.merge());
+                        DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + user.getUid());
                         Query query = userProfileDoc.collection(userTasks).whereEqualTo("title", task.getTitle());
                         query.get().addOnCompleteListener(snapshotTask -> {
                             if (snapshotTask.isSuccessful()) {
