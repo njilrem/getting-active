@@ -82,6 +82,11 @@ public class UserTasksFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        if(taskAdapter == null) {
+            Log.d(TAG, "task adapter is NULL!");
+            outState = null;
+        }
+        else
         outState.putParcelableArrayList(UserTasksKey, taskAdapter.getTasksList());
     }
 }
