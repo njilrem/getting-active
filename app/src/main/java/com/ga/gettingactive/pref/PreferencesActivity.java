@@ -33,10 +33,6 @@ public class PreferencesActivity extends AppCompatActivity {
     private ArrayList<Long> selectedCategories = new ArrayList<>();
     private final FirebaseFirestore db = FirestoreDB.db;
     private RecyclerView prefsView;
-    private PrefListAdapter adapter;
-    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private final ArrayList<String> categoryNames = new ArrayList<>();
-    private final ArrayList<Integer> selectedCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
