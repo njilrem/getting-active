@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class TaskUpdateWorker extends Worker {
 
-    private interface TaskCallback<T>{
+    private interface TaskCallback<T> {
         void onCallback(List<T> list);
     }
 
@@ -45,30 +45,35 @@ public class TaskUpdateWorker extends Worker {
             // too much reads to db, better final array
             String[] categories = {"cоціалізація", "розвиток", "спорт", "догляд", "продуктивність", "краса"};
             ArrayList<String> chosenCategories = new ArrayList<>();
-            while(preferences.isEmpty()){}
-            for(Long idLong: preferences){
+            while (preferences.isEmpty()) {
+            }
+            for (Long idLong : preferences) {
                 int id = idLong.intValue();
                 chosenCategories.add(categories[id]);
             }
-            ArrayList<String> tasksBundles = new ArrayList<>();
-            tasksBundles.add("firstBundle");
-            tasksBundles.add("secondBundle");
+            String[] tasksBundles = {"Відпочинок", "Догляд", "Здоров'я", "Продуктивність", "Розвиток", "Соціалізація", "Спорт", "Хобі"};
             for (String bundle : tasksBundles) {
-                FirestoreDB.db.collection("tasks/" + bundle + "/tasks")
-                        .get()
-                        .addOnCompleteListener(snapshotTask -> {
-                            if (snapshotTask.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
-                                    TaskContainer task = document.toObject(TaskContainer.class);
-                                    for (String tag : task.getHashtags()){
-                                        if (chosenCategories.contains(tag))
+                for (String category : chosenCategories) {
+                    if (category.equalsIgnoreCase(bundle)) {
+                        FirestoreDB.db.collection("categories/categories/" + bundle)
+                                .get()
+                                .addOnCompleteListener(snapshotTask -> {
+                                    if (snapshotTask.isSuccessful()) {
+                                        int counter = 0;
+                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
+                                            if(counter > 3)
+                                                return;
+                                            TaskContainer task = document.toObject(TaskContainer.class);
+                                            Log.d("TASK UPDATE", String.valueOf(task));
                                             userProfile.collection("tasks").document(document.getId()).set(task);
+                                            counter++;
+                                        }
+                                    } else {
+                                        Log.w("taskUpdate", "Error getting documents.", snapshotTask.getException());
                                     }
-                                }
-                            } else {
-                                Log.w("taskUpdate", "Error getting documents.", snapshotTask.getException());
-                            }
-                        });
+                                });
+                    }
+                }
             }
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "getting_active")
                     .setSmallIcon(R.drawable.bottle)
