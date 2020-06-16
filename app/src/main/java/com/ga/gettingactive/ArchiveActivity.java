@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +25,8 @@ import static com.ga.gettingactive.FirestoreDB.db;
 
 public class ArchiveActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private TaskAdapter taskAdapter;
+    private static final String ArchiveKey = "ARCHIVE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +36,29 @@ public class ArchiveActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        recyclerView = findViewById(R.id.completed_tasks_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        taskAdapter = new TaskAdapter();
+        recyclerView.addItemDecoration(new TaskListDecorator(16));
+        recyclerView.setAdapter(taskAdapter);
         fab.setOnClickListener(view -> finish());
         if (savedInstanceState == null) {
             setupRecyclerView();
+        }else{
+            taskAdapter.setItems(savedInstanceState.getParcelableArrayList(ArchiveKey));
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(ArchiveKey, taskAdapter.getTasksList());
     }
 
     private void setupRecyclerView() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            recyclerView = findViewById(R.id.completed_tasks_list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
             DocumentReference userProfile = db.document("users/" + user.getUid());
             userProfile.collection("archive")
                     .get()
@@ -59,10 +75,8 @@ public class ArchiveActivity extends AppCompatActivity {
                                 final String text = "You currently have no completed tasks. try to choose some from All Tasks page";
                                 noOngoingTasksTextView.setText(text);
                             }
-                            TaskAdapter taskAdapter = new TaskAdapter();
                             taskAdapter.setItems(archivedTasks);
-                            recyclerView.addItemDecoration(new TaskListDecorator(16));
-                            recyclerView.setAdapter(taskAdapter);
+
                         } else {
                             Log.d("Archive activity", "Error getting documents: ", task.getException());
                         }

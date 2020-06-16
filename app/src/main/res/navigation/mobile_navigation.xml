@@ -22,4 +22,10 @@
         android:name="com.ga.gettingactive.ui.profile.ProfileFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_tree"
+        android:name="com.ga.gettingactive.ui.tree.TreeFragment"
+        android:label="@string/tree_title"
+        tools:layout="@layout/fragment_tree" />
 </navigation>
