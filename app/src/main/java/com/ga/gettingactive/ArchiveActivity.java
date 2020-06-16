@@ -71,9 +71,9 @@ public class ArchiveActivity extends AppCompatActivity {
                                 archivedTasks.add(taskContainer);
                             }
                             if (archivedTasks.isEmpty()) {
-                                TextView noOngoingTasksTextView = findViewById(R.id.noTasksTextView);
-                                final String text = "You currently have no completed tasks. try to choose some from All Tasks page";
-                                noOngoingTasksTextView.setText(text);
+                                TextView noArchiveTasksTextView = findViewById(R.id.no_archive_tasks_text);
+                                final String text = "Ви ще не виконали жодного завдання, але це ж тільки початок!";
+                                noArchiveTasksTextView.setText(text);
                             }
                             taskAdapter.setItems(archivedTasks);
 

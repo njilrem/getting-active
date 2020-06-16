@@ -43,7 +43,7 @@ public class TaskUpdateWorker extends Worker {
             TaskCallback<Long> preferenceCallback = preferences::addAll;
             getPreferences(preferenceCallback, userProfile);
             // too much reads to db, better final array
-            String[] categories = {"cоціалізація", "розвиток", "спорт", "догляд", "продуктивність", "краса"};
+            String[] categories = {"cоціалізація", "розвиток", "спорт", "догляд", "продуктивність", "відпочинок", "здоров'я", "хобі"};
             ArrayList<String> chosenCategories = new ArrayList<>();
             while (preferences.isEmpty()) {
             }
@@ -61,7 +61,7 @@ public class TaskUpdateWorker extends Worker {
                                     if (snapshotTask.isSuccessful()) {
                                         int counter = 0;
                                         for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
-                                            if (counter == 1) {
+                                            if (counter == 2) {
                                                 counter = 0;
                                                 continue;
                                             }
@@ -80,7 +80,7 @@ public class TaskUpdateWorker extends Worker {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "getting_active")
                     .setSmallIcon(R.drawable.bottle)
                     .setContentTitle("Getting Active")
-                    .setContentText("Hi! Keep on doing your tasks! Check your new tasks")
+                    .setContentText("Ми дали тобі декілька завдань. Дізнайся яке тобі до вподоби")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
             notificationManager.notify(1, builder.build());

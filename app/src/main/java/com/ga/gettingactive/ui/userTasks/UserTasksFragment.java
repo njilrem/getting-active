@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ public class UserTasksFragment extends Fragment {
     private final String TAG = "UserTasksFragment";
     private TaskAdapter taskAdapter;
     private View root;
+    private TextView textView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,6 +72,10 @@ public class UserTasksFragment extends Fragment {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
                                 TaskContainer task = document.toObject(TaskContainer.class);
                                 tasks.add(task);
+                            }
+                            if(tasks.isEmpty()){
+                                textView = root.findViewById(R.id.noTasksTextViewHome);
+                                textView.setText("Ви поки що не маєте завдань. Почекайте.");
                             }
                             taskAdapter.setItems(tasks);
                         } else {
