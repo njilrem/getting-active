@@ -61,8 +61,10 @@ public class TaskUpdateWorker extends Worker {
                                     if (snapshotTask.isSuccessful()) {
                                         int counter = 0;
                                         for (QueryDocumentSnapshot document : Objects.requireNonNull(snapshotTask.getResult())) {
-                                            if(counter > 3)
-                                                return;
+                                            if (counter == 1) {
+                                                counter = 0;
+                                                continue;
+                                            }
                                             TaskContainer task = document.toObject(TaskContainer.class);
                                             Log.d("TASK UPDATE", String.valueOf(task));
                                             userProfile.collection("tasks").document(document.getId()).set(task);
