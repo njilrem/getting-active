@@ -26,6 +26,11 @@ import java.util.Map;
 public class PreferencesActivity extends AppCompatActivity {
     private final String Tag = "Preferable tasks";
     private final String categoriesString = "categories";
+
+    private PrefListAdapter adapter;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private ArrayList<String> categoryNames = new ArrayList<>();
+    private ArrayList<Long> selectedCategories = new ArrayList<>();
     private final FirebaseFirestore db = FirestoreDB.db;
     private RecyclerView prefsView;
     private PrefListAdapter adapter;
@@ -48,8 +53,6 @@ public class PreferencesActivity extends AppCompatActivity {
         setupRecyclerView();
     }
 
-
-    // HAS A BUG WHEN YOU HAVE YO DRAG A SCREEN TO UPDATE VIEW
     private void setupRecyclerView() {
         Log.d("A", "setupRecyclerView");
         prefsView = findViewById(R.id.prefs_recycler_view);
@@ -64,17 +67,17 @@ public class PreferencesActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-        fetchSelectedCategoriesFromDB(new CategoriesCallback<Integer>() {
+        fetchSelectedCategoriesFromDB(new CategoriesCallback<Long>() {
             @Override
-            public void onCallback(List<Integer> list) {
+            public void onCallback(List<Long> list) {
                 selectedCategories.addAll(list);
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void fetchSelectedCategoriesFromDB(CategoriesCallback<Integer> callback) {
-        ArrayList<Integer> list = new ArrayList<>();
+    private void fetchSelectedCategoriesFromDB(CategoriesCallback<Long> callback) {
+        ArrayList<Long> list = new ArrayList<>();
         if (user != null) {
             DocumentReference userProfile = db.collection("users").document(user.getUid());
             userProfile.get().addOnCompleteListener(task -> {
@@ -88,7 +91,7 @@ public class PreferencesActivity extends AppCompatActivity {
                             userProfile.update(field);
                         } else {
                             Log.d(Tag, "fetch selected " + categories);
-                            callback.onCallback((ArrayList<Integer>) categories);
+                            callback.onCallback((ArrayList<Long>)categories);
                         }
                     } else {
                         Log.d(Tag, "No such document");
