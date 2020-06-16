@@ -39,13 +39,13 @@
     <TextView
         android:id="@+id/progress_text"
         android:layout_width="259dp"
-        android:layout_height="37dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/archive_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_username"
-        app:layout_constraintVertical_bias="0.117" />
+        android:gravity="center"
+         />
 
     <Button
         android:id="@+id/archive_button"
@@ -81,5 +81,5 @@
         app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727" />
+        app:layout_constraintVertical_bias="0.729" />
 </androidx.constraintlayout.widget.ConstraintLayout>

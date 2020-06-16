@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.R;
@@ -19,10 +20,12 @@ import java.util.Arrays;
 public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefListViewHolder> {
     private final ArrayList<String> categoryNames;
     private final ArrayList<Long> selectedCategories;
+    private final AppCompatActivity context;
 
-    public PrefListAdapter(ArrayList<String> categoryNames, ArrayList<Long> selectedCategories) {
+    public PrefListAdapter(AppCompatActivity context, ArrayList<String> categoryNames, ArrayList<Long> selectedCategories) {
         this.categoryNames = categoryNames;
         this.selectedCategories = selectedCategories;
+        this.context = context;
         notifyDataSetChanged();
     }
 
@@ -58,22 +61,28 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
         public void bind(String text, int categoryID, boolean active) {
             activated = active;
             button.setText(text);
-            button.setPressed(active);
+            if (active) {
+                button.setBackgroundColor(context.getResources().getColor(R.color.material_green_500));
+            } else {
+                button.setBackgroundColor(context.getResources().getColor(R.color.grey));
+            }
             button.setOnTouchListener((v, event) -> {
 
                 // show interest in events resulting from ACTION_DOWN
                 if (event.getAction() == MotionEvent.ACTION_DOWN) return true;
-
                 // don't handle event unless its ACTION_UP so "doSomething()" only runs once.
                 if (event.getAction() != MotionEvent.ACTION_UP) return false;
                 if (activated) {
                     selectedCategories.remove((long) categoryID);
+                    button.setBackgroundColor(context.getResources().getColor(R.color.grey));
 
                 } else {
                     selectedCategories.add((long) categoryID);
+                    button.setBackgroundColor(context.getResources().getColor(R.color.material_green_500));
+
                 }
                 activated = !activated;
-                button.setPressed(activated);
+                //button.setPressed(activated);
                 Log.d("ARRAYLIST_STATUS", Arrays.toString(selectedCategories.toArray()));
                 return true;
             });

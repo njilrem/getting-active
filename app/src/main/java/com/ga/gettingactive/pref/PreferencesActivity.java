@@ -53,7 +53,7 @@ public class PreferencesActivity extends AppCompatActivity {
         Log.d("A", "setupRecyclerView");
         prefsView = findViewById(R.id.prefs_recycler_view);
         prefsView.setLayoutManager(new CustomGridLayout(this, 2));
-        adapter = new PrefListAdapter(categoryNames, selectedCategories);
+        adapter = new PrefListAdapter(this, categoryNames, selectedCategories);
         Log.d("A", Arrays.toString(categoryNames.toArray()));
         prefsView.setAdapter(adapter);
         fetchNamesFromDB(new CategoriesCallback<String>() {
