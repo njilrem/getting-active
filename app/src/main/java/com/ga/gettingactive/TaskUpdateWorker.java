@@ -36,14 +36,15 @@ public class TaskUpdateWorker extends Worker {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             DocumentReference userProfile = FirestoreDB.db.collection("users").document(user.getUid());
-            ArrayList<Integer> preferences = new ArrayList<>();
-            TaskCallback<Integer> preferenceCallback = preferences::addAll;
+            ArrayList<Long> preferences = new ArrayList<>();
+            TaskCallback<Long> preferenceCallback = preferences::addAll;
             getPreferences(preferenceCallback, userProfile);
             // too much reads to db, better final array
             String[] categories = {"cоціалізація", "розвиток", "спорт", "догляд", "продуктивність", "краса"};
             ArrayList<String> chosenCategories = new ArrayList<>();
             while(preferences.isEmpty()){}
-            for(Integer id: preferences){
+            for(Long idLong: preferences){
+                int id = idLong.intValue();
                 chosenCategories.add(categories[id]);
             }
             ArrayList<String> tasksBundles = new ArrayList<>();
@@ -93,11 +94,11 @@ public class TaskUpdateWorker extends Worker {
 //        }
 //    }
 
-    private void getPreferences(TaskCallback<Integer> callback, DocumentReference userProfile) {
-        final ArrayList<Integer> preferences = new ArrayList<>();
+    private void getPreferences(TaskCallback<Long> callback, DocumentReference userProfile) {
+        final ArrayList<Long> preferences = new ArrayList<>();
         userProfile.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                preferences.addAll((ArrayList<Integer>) task.getResult().get("categories"));
+                preferences.addAll((ArrayList<Long>) task.getResult().get("categories"));
                 callback.onCallback(preferences);
             }
         });
