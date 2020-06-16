@@ -1,5 +1,6 @@
 package com.ga.gettingactive.pref;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,28 +47,34 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
 
     class PrefListViewHolder extends RecyclerView.ViewHolder {
         private final Button button;
+        private boolean activated = false;
 
         public PrefListViewHolder(@NonNull View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.category_button);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         public void bind(String text, int categoryID, boolean active) {
+            activated = active;
             button.setText(text);
             button.setPressed(active);
             button.setOnTouchListener((v, event) -> {
+
                 // show interest in events resulting from ACTION_DOWN
                 if (event.getAction() == MotionEvent.ACTION_DOWN) return true;
 
                 // don't handle event unless its ACTION_UP so "doSomething()" only runs once.
                 if (event.getAction() != MotionEvent.ACTION_UP) return false;
-                if (active) {
+                if (activated) {
                     selectedCategories.remove((long) categoryID);
+
                 } else {
                     selectedCategories.add((long) categoryID);
                 }
+                activated = !activated;
+                button.setPressed(activated);
                 Log.d("ARRAYLIST_STATUS", Arrays.toString(selectedCategories.toArray()));
-                button.setPressed(!active);
                 return true;
             });
         }

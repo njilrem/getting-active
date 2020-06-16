@@ -37,4 +37,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="apply_button_text">Продовжити</string>
     <string name="preferences_button_text">Змінити цілі</string>
+    <string name="navigation_tree">Дерево</string>
 </resources>
