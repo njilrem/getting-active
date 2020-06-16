@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import static com.ga.gettingactive.FirestoreDB.db;
 
 public class ArchiveActivity extends AppCompatActivity {
@@ -65,7 +67,7 @@ public class ArchiveActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             ArrayList<TaskContainer> archivedTasks = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 TaskContainer taskContainer = document.toObject(TaskContainer.class);
                                 Log.d("TASK", String.valueOf(taskContainer));
                                 archivedTasks.add(taskContainer);

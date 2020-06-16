@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
@@ -79,7 +80,7 @@ public class ProfileFragment extends Fragment {
             final int[] doneTasksCount = {0};
             userArchive.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    doneTasksCount[0] = task.getResult().size();
+                    doneTasksCount[0] = Objects.requireNonNull(task.getResult()).size();
                     Log.d("DONE TASK", String.valueOf(doneTasksCount[0]));
                     if (doneTasksCount[0] == 0) {
                         progressText.setText(getString(R.string.progress_string_no_tasks));

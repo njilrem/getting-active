@@ -19,27 +19,29 @@
     <string name="tip_icon">Tip icon</string>
     <string name="task_tags_default">#hashtag #hashtag #hashtag</string>
     <string name="anonymous_profile">anonymous profile picture</string>
-    <string name="progress_string">Ви зробили %1$d завдань. Продовжуйте в тому ж дусі!</string>
+    <string name="progress_string">Ви виконали %1$d завдань. Продовжуйте в тому ж дусі!</string>
     <string name="task_viewholder_button_text">Я в ділі!</string>
-    <string name="progress_string_no_tasks">\"Ви ще не виконали завдань\"</string>
+    <string name="progress_string_no_tasks">Ви ще не виконали завдань жодного завдання.</string>
     <string name="select_pref_text">Виберіть ваші цілі:</string>
     <string name="archive_tasks_label">Архів завдань</string>
     <string name="task_complete">Виконано!</string>
     <string name="task_accepted">Я в ділі!</string>
     <string name="title_activity_archive">ArchiveActivity</string>
-    <!-- Strings used for fragments for navigation -->
+    <string name="level">Ваш рівень: %1$d.</string>
+    <string name="level_tip">Виконуйте завдання, щоб виростити величезне дерево!</string>
+    <string name="level_tip0">Поки що Ви не виконали жодного завдання. Виконайте хоча б одне для того, щоб побачити Ваше дерево.</string>
+    <string name="level_tip5">Вітаємо! Ви успішно завершили достатньо завдань, щоб виростити кремезне дерево!</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="apply_button_text">Продовжити</string>
     <string name="preferences_button_text">Змінити цілі</string>
     <string name="navigation_tree">Дерево</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tree_title">Моє дерево</string>
     <string name="tree_description">Ваше дерево прогресу.</string>
+    <string name="tree_text_default">Ваше дерево прогресу.</string>
 </resources>
