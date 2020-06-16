@@ -17,9 +17,9 @@ import java.util.Arrays;
 
 public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefListViewHolder> {
     private final ArrayList<String> categoryNames;
-    private final ArrayList<Integer> selectedCategories;
+    private final ArrayList<Long> selectedCategories;
 
-    public PrefListAdapter(ArrayList<String> categoryNames, ArrayList<Integer> selectedCategories){
+    public PrefListAdapter(ArrayList<String> categoryNames, ArrayList<Long> selectedCategories) {
         this.categoryNames = categoryNames;
         this.selectedCategories = selectedCategories;
         notifyDataSetChanged();
@@ -35,7 +35,7 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
 
     @Override
     public void onBindViewHolder(@NonNull PrefListViewHolder holder, int position) {
-        boolean active = selectedCategories.contains(position);
+        boolean active = selectedCategories.contains((long) position);
         holder.bind(categoryNames.get(position), position, active);
     }
 
@@ -44,35 +44,31 @@ public class PrefListAdapter extends RecyclerView.Adapter<PrefListAdapter.PrefLi
         return categoryNames.size();
     }
 
-    class PrefListViewHolder extends RecyclerView.ViewHolder{
+    class PrefListViewHolder extends RecyclerView.ViewHolder {
         private final Button button;
-        private boolean activated;
-
 
         public PrefListViewHolder(@NonNull View itemView) {
             super(itemView);
             button = itemView.findViewById(R.id.category_button);
         }
 
-        public void bind(String text, int categoryID,  boolean active){
+        public void bind(String text, int categoryID, boolean active) {
             button.setText(text);
-            activated = active;
-            button.setPressed(activated);
+            button.setPressed(active);
             button.setOnTouchListener((v, event) -> {
                 // show interest in events resulting from ACTION_DOWN
                 if (event.getAction() == MotionEvent.ACTION_DOWN) return true;
 
                 // don't handle event unless its ACTION_UP so "doSomething()" only runs once.
                 if (event.getAction() != MotionEvent.ACTION_UP) return false;
-                if(activated){
-                    selectedCategories.remove((Integer)categoryID);
-                }else{
-                    selectedCategories.add(categoryID);
+                if (active) {
+                    selectedCategories.remove((long) categoryID);
+                } else {
+                    selectedCategories.add((long) categoryID);
                 }
                 Log.d("ARRAYLIST_STATUS", Arrays.toString(selectedCategories.toArray()));
-                    activated = !activated;
-                    button.setPressed(activated);
-                    return true;
+                button.setPressed(!active);
+                return true;
             });
         }
     }

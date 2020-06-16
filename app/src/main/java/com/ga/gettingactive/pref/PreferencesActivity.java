@@ -33,7 +33,7 @@ public class PreferencesActivity extends AppCompatActivity {
     private PrefListAdapter adapter;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private ArrayList<String> categoryNames = new ArrayList<>();
-    private ArrayList<Integer> selectedCategories = new ArrayList<>();
+    private ArrayList<Long> selectedCategories = new ArrayList<>();
 
     private final FirebaseFirestore db = FirestoreDB.db;
 
@@ -67,9 +67,9 @@ public class PreferencesActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-        fetchSelectedCategoriesFromDB(new CategoriesCallback<Integer>() {
+        fetchSelectedCategoriesFromDB(new CategoriesCallback<Long>() {
             @Override
-            public void onCallback(List<Integer> list) {
+            public void onCallback(List<Long> list) {
                 selectedCategories.addAll(list);
                 adapter.notifyDataSetChanged();
             }
@@ -77,8 +77,8 @@ public class PreferencesActivity extends AppCompatActivity {
 
     }
 
-    private void fetchSelectedCategoriesFromDB(CategoriesCallback<Integer> callback) {
-        ArrayList<Integer> list = new ArrayList<>();
+    private void fetchSelectedCategoriesFromDB(CategoriesCallback<Long> callback) {
+        ArrayList<Long> list = new ArrayList<>();
         if (user != null) {
             DocumentReference userProfile = db.collection("users").document(user.getUid());
             userProfile.get().addOnCompleteListener(task -> {
@@ -92,7 +92,7 @@ public class PreferencesActivity extends AppCompatActivity {
                             userProfile.update(field);
                         } else {
                             Log.d(Tag, "fetch selected " + categories);
-                            callback.onCallback((ArrayList<Integer>)categories);
+                            callback.onCallback((ArrayList<Long>)categories);
                         }
                     } else {
                         Log.d(Tag, "No such document");
