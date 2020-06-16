@@ -12,11 +12,15 @@
         <activity
             android:name=".ArchiveActivity"
             android:label="@string/title_activity_archive"
-            android:theme="@style/Theme.GettingActive.AppBarOverlay" />
-        <activity android:name=".pref.PreferencesActivity" />
+            android:theme="@style/Theme.GettingActive.AppBarOverlay"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".pref.PreferencesActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
