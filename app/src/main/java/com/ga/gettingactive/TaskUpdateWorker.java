@@ -23,7 +23,7 @@ public class TaskUpdateWorker extends Worker {
 
     public TaskUpdateWorker(
             @NonNull Context context,
-            @NonNull WorkerParameters params, String a) {
+            @NonNull WorkerParameters params) {
         super(context, params);
     }
 

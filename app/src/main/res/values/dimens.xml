@@ -5,4 +5,5 @@
     <dimen name="tasks_list_margin">16dp</dimen>
     <dimen name="holder_subtext_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="button_small">12sp</dimen>
 </resources>

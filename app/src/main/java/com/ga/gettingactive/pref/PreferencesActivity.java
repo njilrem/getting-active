@@ -1,15 +1,12 @@
 package com.ga.gettingactive.pref;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.MainActivity;
@@ -21,21 +18,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PreferencesActivity extends AppCompatActivity {
-    private RecyclerView prefsView;
     private final String Tag = "Preferable tasks";
     private final String categoriesString = "categories";
-
-    private PrefListAdapter adapter;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private ArrayList<String> categoryNames = new ArrayList<>();
-    private ArrayList<Integer> selectedCategories = new ArrayList<>();
-
     private final FirebaseFirestore db = FirestoreDB.db;
+    private RecyclerView prefsView;
+    private PrefListAdapter adapter;
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final ArrayList<String> categoryNames = new ArrayList<>();
+    private final ArrayList<Integer> selectedCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +55,7 @@ public class PreferencesActivity extends AppCompatActivity {
         prefsView = findViewById(R.id.prefs_recycler_view);
         prefsView.setLayoutManager(new CustomGridLayout(this, 2));
         adapter = new PrefListAdapter(categoryNames, selectedCategories);
+        Log.d("A", Arrays.toString(categoryNames.toArray()));
         prefsView.setAdapter(adapter);
         fetchNamesFromDB(new CategoriesCallback<String>() {
             @Override
@@ -74,7 +71,6 @@ public class PreferencesActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     private void fetchSelectedCategoriesFromDB(CategoriesCallback<Integer> callback) {
@@ -92,7 +88,7 @@ public class PreferencesActivity extends AppCompatActivity {
                             userProfile.update(field);
                         } else {
                             Log.d(Tag, "fetch selected " + categories);
-                            callback.onCallback((ArrayList<Integer>)categories);
+                            callback.onCallback((ArrayList<Integer>) categories);
                         }
                     } else {
                         Log.d(Tag, "No such document");
@@ -122,7 +118,7 @@ public class PreferencesActivity extends AppCompatActivity {
         });
     }
 
-    private interface CategoriesCallback<T>{
+    private interface CategoriesCallback<T> {
         void onCallback(List<T> list);
     }
 }
