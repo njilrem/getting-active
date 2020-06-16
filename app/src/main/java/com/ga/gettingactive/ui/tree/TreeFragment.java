@@ -48,8 +48,7 @@ public class TreeFragment extends Fragment {
                     } else {
                         treeText.setText(getString(R.string.progress_string, doneTasksCount[0]));
                     }
-                    //  int level = determineUserLevel(doneTasksCount[0]);
-                    int level = 2;
+                     int level = determineUserLevel(doneTasksCount[0]);
                     treeText.setText(getString(R.string.level, level));
                     switch (level) {
                         case 0: {
@@ -64,7 +63,7 @@ public class TreeFragment extends Fragment {
                             break;
                         }
                         case 2: {
-                            treeImage.setImageDrawable(root.getResources().getDrawable(R.drawable.tree2a));
+                            treeImage.setImageDrawable(root.getResources().getDrawable(R.drawable.tree2));
                             treeTextSub.setText(getString(R.string.level_tip));
                             break;
                         }
