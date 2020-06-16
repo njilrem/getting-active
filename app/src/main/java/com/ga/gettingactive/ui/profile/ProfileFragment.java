@@ -20,6 +20,7 @@ import com.ga.gettingactive.ArchiveActivity;
 import com.ga.gettingactive.FirestoreDB;
 import com.ga.gettingactive.MainActivity;
 import com.ga.gettingactive.R;
+import com.ga.gettingactive.pref.PreferencesActivity;
 import com.ga.gettingactive.tasklist.TaskAdapter;
 import com.ga.gettingactive.tasklist.TaskContainer;
 import com.ga.gettingactive.tasklist.TaskListDecorator;
@@ -53,6 +54,11 @@ public class ProfileFragment extends Fragment {
         final TextView usernameText = root.findViewById(R.id.text_username);
         final TextView progressText = root.findViewById(R.id.progress_text);
         final Button signOutButton = root.findViewById(R.id.sign_out_button);
+        final Button preferencesButton = root.findViewById(R.id.preferences_button);
+        preferencesButton.setOnClickListener( v -> {
+            Intent intent = new Intent(getActivity(), PreferencesActivity.class);
+            startActivity(intent);
+        });
         signOutButton.setOnClickListener(v -> {
             AuthUI.getInstance()
                     .signOut(requireContext())

@@ -1,42 +1,54 @@
 package com.ga.gettingactive.pref;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.ga.gettingactive.FirestoreDB;
+import com.ga.gettingactive.MainActivity;
 import com.ga.gettingactive.R;
-import com.ga.gettingactive.tasklist.TaskContainer;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class PreferencesActivity extends AppCompatActivity {
-    private static final String[] categories = {"health", "beauty", "socialization"};
     private RecyclerView prefsView;
-    private String Tag = "Preferable tasks";
+    private final String Tag = "Preferable tasks";
+    private final String categoriesString = "categories";
 
-    FirebaseFirestore db = FirestoreDB.db;
+    private PrefListAdapter adapter;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private ArrayList<String> categoryNames = new ArrayList<>();
+    private ArrayList<Integer> selectedCategories = new ArrayList<>();
+
+    private final FirebaseFirestore db = FirestoreDB.db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
+        final Button applyButton = findViewById(R.id.apply_button);
+        applyButton.setOnClickListener(v -> {
+            Map<String, Object> userPref = new HashMap<>();
+            userPref.put("categories", selectedCategories);
+            db.collection("users").document(user.getUid()).update(userPref);
+            Intent intent = new Intent(PreferencesActivity.this, MainActivity.class);
+            PreferencesActivity.this.startActivity(intent);
+        });
         setupRecyclerView();
     }
 
@@ -46,28 +58,26 @@ public class PreferencesActivity extends AppCompatActivity {
         Log.d("A", "setupRecyclerView");
         prefsView = findViewById(R.id.prefs_recycler_view);
         prefsView.setLayoutManager(new CustomGridLayout(this, 2));
-        ArrayList<String> categoryNames = new ArrayList<>();
+        adapter = new PrefListAdapter(categoryNames, selectedCategories);
+        prefsView.setAdapter(adapter);
         fetchNamesFromDB(new CategoriesCallback<String>() {
             @Override
             public void onCallback(List<String> list) {
                 categoryNames.addAll(list);
+                adapter.notifyDataSetChanged();
             }
         });
-        Log.d(Tag, String.valueOf(categoryNames));
-        ArrayList<Integer> selectedCategories = new ArrayList<>();
         fetchSelectedCategoriesFromDB(new CategoriesCallback<Integer>() {
             @Override
             public void onCallback(List<Integer> list) {
                 selectedCategories.addAll(list);
+                adapter.notifyDataSetChanged();
             }
         });
-        Log.d(Tag, String.valueOf(selectedCategories));
-        PrefListAdapter adapter = new PrefListAdapter(categoryNames, selectedCategories);
-        prefsView.setAdapter(adapter);
+
     }
 
     private void fetchSelectedCategoriesFromDB(CategoriesCallback<Integer> callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         ArrayList<Integer> list = new ArrayList<>();
         if (user != null) {
             DocumentReference userProfile = db.collection("users").document(user.getUid());
@@ -95,7 +105,7 @@ public class PreferencesActivity extends AppCompatActivity {
     }
 
     private void fetchNamesFromDB(CategoriesCallback<String> callback) {
-        db.collection("categories").document("categories").get().addOnCompleteListener(task -> {
+        db.collection(categoriesString).document(categoriesString).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {

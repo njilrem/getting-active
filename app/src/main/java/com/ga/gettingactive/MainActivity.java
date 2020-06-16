@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +23,10 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,8 +67,19 @@ public class MainActivity extends AppCompatActivity {
             DocumentReference userProfileDoc = FirestoreDB.db.document("users/" + uid);
             userProfileDoc.set(userObj, SetOptions.merge());
         }
-        Intent intent = new Intent(this, PreferencesActivity.class);
-        startActivity(intent);
+        FirestoreDB.db.collection("users").document(Objects.requireNonNull(user).getUid()).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot userProfileDoc = task.getResult();
+                Object categoriesObj = userProfileDoc.get("categories");
+                ArrayList<Integer> categories = new ArrayList<>();
+                if(categoriesObj != null)
+                     categories = (ArrayList<Integer>) categoriesObj;
+                if(categories.isEmpty()){
+                    Intent intent = new Intent(this, PreferencesActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void createSignInIntent() {
