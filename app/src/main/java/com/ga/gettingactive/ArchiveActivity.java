@@ -37,13 +37,13 @@ public class ArchiveActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+     //   FloatingActionButton fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.completed_tasks_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter();
         recyclerView.addItemDecoration(new TaskListDecorator(16));
         recyclerView.setAdapter(taskAdapter);
-        fab.setOnClickListener(view -> finish());
+     //   fab.setOnClickListener(view -> finish());
         if (savedInstanceState == null) {
             setupRecyclerView();
         }else{
